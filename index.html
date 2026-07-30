@@ -299,10 +299,9 @@
 
     <script>
         // ==========================================
-        // 1. GENERATION DES 150 QUESTIONS PAR CATEGORIE
+        // 1. BASE DE DONNÉES DES EXERCICES
         // ==========================================
 
-        // EXERCICE 1 : Compléter la phrase
         const baseEx1 = [
             { q: "Le chat boit du ___.", a: "lait", o: ["lait", "pain", "savon", "stylo"] },
             { q: "Je ferme la ___ à clé.", a: "porte", o: ["porte", "table", "soupe", "voiture"] },
@@ -316,7 +315,6 @@
             { q: "J'écris sur une feuille avec un ___.", a: "stylo", o: ["stylo", "gâteau", "casque", "balai"] }
         ];
 
-        // EXERCICE 2 : Remettre en ordre
         const baseEx2 = [
             { words: ["Le", "chat", "boit", "du", "lait."] },
             { words: ["Elle", "regarde", "la", "télévision."] },
@@ -330,7 +328,6 @@
             { words: ["Le", "train", "arrive", "en", "gare."] }
         ];
 
-        // EXERCICE 3 : Associer Mot / Image (Emojis)
         const baseEx3 = [
             { img: "🍎", a: "Une pomme", o: ["Une pomme", "Une poire", "Une banane", "Une cerise"] },
             { img: "🚗", a: "Une voiture", o: ["Un vélo", "Une voiture", "Un avion", "Un train"] },
@@ -344,7 +341,6 @@
             { img: "👟", a: "Une chaussure", o: ["Une chaussette", "Une chaussure", "Un pantalon", "Une veste"] }
         ];
 
-        // EXERCICE 4 : Trouver l'intrus
         const baseEx4 = [
             { cat: "Fruits", a: "Voiture", o: ["Pomme", "Banane", "Voiture", "Fraise"] },
             { cat: "Animaux", a: "Table", o: ["Chien", "Chat", "Table", "Cheval"] },
@@ -356,7 +352,7 @@
             { cat: "Ustensiles de cuisine", a: "Chaussure", o: ["Fourchette", "Cuillère", "Couteau", "Chaussure"] }
         ];
 
-        // Duplication automatique pour atteindre 150 éléments par exercice
+        // Duplication propre pour atteindre 150 questions
         function createData(baseArray, targetSize = 150) {
             let result = [];
             while (result.length < targetSize) {
@@ -375,7 +371,7 @@
         const dataEx4 = createData(baseEx4);
 
         // ==========================================
-        // 2. LOGIQUE D'AFFICHAGE ET D'INTERACTION
+        // 2. LOGIQUE ET NAVIGATION
         // ==========================================
 
         let currentType = 1;
@@ -395,7 +391,6 @@
         }
 
         function loadQuestion() {
-            // Reinitialisation visuelle
             document.getElementById('feedback').textContent = '';
             document.getElementById('feedback').className = 'feedback';
             document.getElementById('btn-next').classList.add('hidden');
@@ -408,7 +403,6 @@
             const zBuilder = document.getElementById('zone-builder');
             const zBank = document.getElementById('zone-bank');
 
-            // Cacher toutes les zones spécialisées
             qBox.classList.add('hidden');
             zOptions.classList.add('hidden');
             zBuilder.classList.add('hidden');
@@ -418,7 +412,7 @@
             zBuilder.innerHTML = '';
             zBank.innerHTML = '';
 
-            // --- EXERCICE 1 ---
+            // EXERCICE 1
             if (currentType === 1) {
                 const item = dataEx1[currentIndex];
                 document.getElementById('instruction').textContent = "Choisissez le mot pour compléter la phrase :";
@@ -426,7 +420,8 @@
                 qBox.textContent = item.q;
                 qBox.classList.remove('hidden');
 
-                item.o.sort(() => 0.5 - Math.random()).forEach(opt => {
+                const shuffledOptions = [...item.o].sort(() => 0.5 - Math.random());
+                shuffledOptions.forEach(opt => {
                     const btn = document.createElement('button');
                     btn.className = 'btn-option';
                     btn.textContent = opt;
@@ -436,7 +431,7 @@
                 zOptions.classList.remove('hidden');
             }
 
-            // --- EXERCICE 2 ---
+            // EXERCICE 2
             else if (currentType === 2) {
                 const item = dataEx2[currentIndex];
                 document.getElementById('instruction').textContent = "Cliquez sur les mots pour former la phrase :";
@@ -445,10 +440,8 @@
                 zBank.classList.remove('hidden');
                 document.getElementById('btn-validate').classList.remove('hidden');
 
-                // Mélanger les mots
-                const shuffled = [...item.words].sort(() => 0.5 - Math.random());
-
-                shuffled.forEach(word => {
+                const shuffledWords = [...item.words].sort(() => 0.5 - Math.random());
+                shuffledWords.forEach(word => {
                     const chip = document.createElement('div');
                     chip.className = 'word-tag';
                     chip.textContent = word;
@@ -463,7 +456,7 @@
                 });
             }
 
-            // --- EXERCICE 3 ---
+            // EXERCICE 3
             else if (currentType === 3) {
                 const item = dataEx3[currentIndex];
                 document.getElementById('instruction').textContent = "Quel est le nom de cette image/icône ?";
@@ -471,7 +464,8 @@
                 qBox.innerHTML = `<span style="font-size: 4rem;">${item.img}</span>`;
                 qBox.classList.remove('hidden');
 
-                item.o.sort(() => 0.5 - Math.random()).forEach(opt => {
+                const shuffledOptions = [...item.o].sort(() => 0.5 - Math.random());
+                shuffledOptions.forEach(opt => {
                     const btn = document.createElement('button');
                     btn.className = 'btn-option';
                     btn.textContent = opt;
@@ -481,7 +475,7 @@
                 zOptions.classList.remove('hidden');
             }
 
-            // --- EXERCICE 4 ---
+            // EXERCICE 4 : TROUVER L'INTRUS
             else if (currentType === 4) {
                 const item = dataEx4[currentIndex];
                 document.getElementById('instruction').textContent = `Trouvez l'intrus dans la catégorie "${item.cat}" :`;
@@ -489,7 +483,8 @@
                 qBox.textContent = `Quel mot N'EST PAS un(e) ${item.cat.toLowerCase()} ?`;
                 qBox.classList.remove('hidden');
 
-                item.o.sort(() => 0.5 - Math.random()).forEach(opt => {
+                const shuffledOptions = [...item.o].sort(() => 0.5 - Math.random());
+                shuffledOptions.forEach(opt => {
                     const btn = document.createElement('button');
                     btn.className = 'btn-option';
                     btn.textContent = opt;
@@ -500,21 +495,32 @@
             }
         }
 
-        // VERIFICATION CHOIX (EXERCICES 1, 3, 4)
-        function checkChoice(selected, correct, btn) {
+        // VERIFICATION AVEC COMPARAISON NETTOYÉE ET AFFICHAGE DIRECT DE LA BONNE RÉPONSE
+        function checkChoice(selectedWord, correctWord, clickedBtn) {
             const allBtns = document.querySelectorAll('.btn-option');
             allBtns.forEach(b => b.disabled = true);
 
             const feedback = document.getElementById('feedback');
 
-            if (selected === correct) {
-                btn.classList.add('correct');
+            // Nettoyage strict des mots pour éviter tout décalage
+            const cleanSelected = String(selectedWord).trim().toLowerCase();
+            const cleanCorrect = String(correctWord).trim().toLowerCase();
+
+            if (cleanSelected === cleanCorrect) {
+                clickedBtn.classList.add('correct');
                 feedback.textContent = "Bravo ! Bonne réponse. 🎉";
                 feedback.className = "feedback success";
             } else {
-                btn.classList.add('wrong');
-                feedback.textContent = `Incorrect. La réponse était : ${correct}`;
+                clickedBtn.classList.add('wrong');
+                feedback.textContent = `Incorrect. La réponse était : ${correctWord}`;
                 feedback.className = "feedback error";
+
+                // Met en vert le bouton qui était la bonne réponse
+                allBtns.forEach(btn => {
+                    if (String(btn.textContent).trim().toLowerCase() === cleanCorrect) {
+                        btn.classList.add('correct');
+                    }
+                });
             }
 
             document.getElementById('btn-next').classList.remove('hidden');
@@ -541,7 +547,6 @@
             document.getElementById('btn-next').classList.remove('hidden');
         }
 
-        // PASSAGE A LA QUESTION SUIVANTE
         function nextQuestion() {
             if (currentIndex < 149) {
                 currentIndex++;
