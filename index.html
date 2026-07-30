@@ -1,776 +1,554 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrthoAphasie - Plateforme de Rééducation du Langage</title>
+    <title>Orthophonie Pro - Rééducation du Langage</title>
     <style>
         :root {
-            --primary: #2563EB;
-            --primary-hover: #1D4ED8;
-            --secondary: #0EA5E9;
-            --success: #10B981;
-            --error: #EF4444;
-            --bg: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --text-main: #0F172A;
-            --text-muted: #475569;
-            --border: #E2E8F0;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --error: #dc2626;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
         }
 
         * {
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
         }
 
         body {
             background-color: var(--bg);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* En-tête Pro */
-        header {
-            background: var(--card-bg);
-            border-bottom: 1px solid var(--border);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-badge {
-            background: #EFF6FF;
-            color: var(--primary);
-            font-size: 0.8rem;
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-
-        /* Conteneur Principal */
-        main {
-            flex: 1;
+            color: var(--text-dark);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px 20px;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        .app-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            border: 1px solid var(--border);
+        .container {
+            background-color: var(--card-bg);
             width: 100%;
-            max-width: 750px;
-            padding: 35px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            max-width: 700px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border: 1px solid var(--border);
         }
 
-        /* Menu Principal Grid */
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .btn-back {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .btn-back:hover {
+            background: #e2e8f0;
+        }
+
+        .progress-text {
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        /* MENU PRINCIPAL */
         .menu-title {
             text-align: center;
             font-size: 1.8rem;
             margin-bottom: 10px;
-            color: var(--text-main);
         }
 
         .menu-subtitle {
             text-align: center;
             color: var(--text-muted);
-            margin-bottom: 30px;
-            font-size: 1.1rem;
+            margin-bottom: 25px;
         }
 
-        .exercises-grid {
+        .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            gap: 15px;
         }
 
-        .card-exo {
-            background: #F8FAFC;
+        .menu-card {
+            background: #f8fafc;
             border: 2px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: left;
+            padding: 20px;
+            border-radius: 15px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            text-align: left;
+            transition: all 0.2s;
         }
 
-        .card-exo:hover {
+        .menu-card:hover {
             border-color: var(--primary);
-            background: #EFF6FF;
+            background: #eff6ff;
             transform: translateY(-2px);
         }
 
-        .card-exo h3 {
-            font-size: 1.25rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .card-exo p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.4;
-            margin-bottom: 15px;
-        }
-
-        .tag-count {
-            align-self: flex-start;
-            background: #E0E7FF;
+        .menu-card h3 {
             color: var(--primary);
-            font-weight: bold;
-            font-size: 0.85rem;
-            padding: 4px 10px;
-            border-radius: 20px;
+            margin-bottom: 5px;
         }
 
-        /* Écran Exercice Header */
-        .exo-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-        }
-
-        .btn-nav {
-            background: #F1F5F9;
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-nav:hover { background: #E2E8F0; }
-
-        .audio-btn {
-            background: #EFF6FF;
-            border: 1px solid #BFDBFE;
-            color: var(--primary);
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Barre de Progression Pro */
-        .progress-container {
-            width: 100%;
-            background: #E2E8F0;
-            height: 10px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        /* Zones d'exercice */
+        /* ZONE D'EXERCICE */
         .instruction {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .display-box {
-            background: #F1F5F9;
-            border: 2px dashed #CBD5E1;
-            border-radius: 16px;
+        .question-box {
+            background: #f1f5f9;
+            border: 2px dashed var(--primary);
             padding: 25px;
+            border-radius: 15px;
             text-align: center;
             font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 30px;
+            font-weight: bold;
+            margin-bottom: 25px;
             min-height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
         }
 
+        /* OPTIONS EXERCICES 1, 3, 4 */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .btn-opt {
+        .btn-option {
             background: var(--card-bg);
             border: 2px solid var(--border);
-            padding: 18px;
+            padding: 16px;
             font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 14px;
+            font-weight: bold;
+            border-radius: 12px;
             cursor: pointer;
-            color: var(--text-main);
+            color: var(--text-dark);
             transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .btn-opt:hover:not(:disabled) {
+        .btn-option:hover:not(:disabled) {
             border-color: var(--primary);
-            background: #EFF6FF;
+            background: #eff6ff;
         }
 
-        .btn-opt.correct {
+        .btn-option.correct {
             background-color: var(--success) !important;
             color: white !important;
             border-color: var(--success) !important;
         }
 
-        .btn-opt.wrong {
+        .btn-option.wrong {
             background-color: var(--error) !important;
             color: white !important;
             border-color: var(--error) !important;
         }
 
-        /* Mots à placer (Exo 2) */
-        .word-bank {
+        /* MOTS RECONSTRUCTION (EXERCICE 2) */
+        .sentence-builder {
+            min-height: 70px;
+            background: #f1f5f9;
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            padding: 10px;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
+            align-items: center;
             justify-content: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .word-chip {
-            background: var(--card-bg);
+        .words-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .word-tag {
+            background: white;
             border: 2px solid var(--primary);
             color: var(--primary);
-            padding: 12px 20px;
-            border-radius: 25px;
+            padding: 10px 18px;
+            border-radius: 20px;
             font-size: 1.2rem;
-            font-weight: 700;
+            font-weight: bold;
             cursor: pointer;
             user-select: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
         }
 
-        /* Feedback et actions */
+        /* FEEDBACK ET BOUTON SUIVANT */
         .feedback {
             text-align: center;
             font-size: 1.3rem;
-            font-weight: 700;
-            margin-top: 20px;
+            font-weight: bold;
             min-height: 35px;
+            margin-bottom: 15px;
         }
 
         .feedback.success { color: var(--success); }
         .feedback.error { color: var(--error); }
 
-        .btn-action-primary {
-            display: block;
+        .btn-main {
             width: 100%;
             background: var(--primary);
             color: white;
             border: none;
             padding: 16px;
             font-size: 1.2rem;
-            font-weight: 700;
+            font-weight: bold;
             border-radius: 12px;
             cursor: pointer;
-            margin-top: 20px;
-            transition: background 0.2s;
         }
 
-        .btn-action-primary:hover { background: var(--primary-hover); }
-
-        .hidden { display: none !important; }
-
-        /* Écran de résultats */
-        .results-box {
-            text-align: center;
-            padding: 20px 0;
+        .btn-main:hover {
+            background: var(--primary-hover);
         }
 
-        .score-display {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin: 20px 0;
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <span>🗣️ OrthoAphasie</span>
-            <span class="logo-badge">Pro v2.0</span>
-        </div>
-        <div style="font-size: 0.95rem; color: var(--text-muted); font-weight: 600;">
-            Module d'Entraînement
-        </div>
-    </header>
-
-    <main>
-        <div class="app-card">
+    <div class="container">
+        
+        <!-- ECRAN MENU -->
+        <div id="screen-menu">
+            <h1 class="menu-title">Rééducation du Langage 🗣️</h1>
+            <p class="menu-subtitle">Sélectionnez une catégorie d'exercices (150 questions chacune)</p>
             
-            <!-- MENU PRINCIPAL -->
-            <div id="menu-screen">
-                <h1 class="menu-title">Choisir une série d'exercices</h1>
-                <p class="menu-subtitle">Sélectionnez un axe de travail. 150 exercices disponibles par catégorie.</p>
-                
-                <div class="exercises-grid">
-                    <div class="card-exo" onclick="startEx(1)">
-                        <div>
-                            <h3>1. Compléter la phrase</h3>
-                            <p>Trouvez le mot manquant le plus adapté pour terminer la phrase.</p>
-                        </div>
-                        <span class="tag-count">150 Exercices</span>
-                    </div>
-
-                    <div class="card-exo" onclick="startEx(2)">
-                        <div>
-                            <h3>2. Syntaxe & Ordre</h3>
-                            <p>Reconstruisez des phrases complètes en sélectionnant les mots dans le bon ordre.</p>
-                        </div>
-                        <span class="tag-count">150 Exercices</span>
-                    </div>
-
-                    <div class="card-exo" onclick="startEx(3)">
-                        <div>
-                            <h3>3. Association Image/Mot</h3>
-                            <p>Identifiez la désignation exacte correspondant à l'élément visuel présenté.</p>
-                        </div>
-                        <span class="tag-count">150 Exercices</span>
-                    </div>
-
-                    <div class="card-exo" onclick="startEx(4)">
-                        <div>
-                            <h3>4. Chasser l'Intrus</h3>
-                            <p>Travaillez la catégorisation sémantique en retrouvant le mot hors-sujet.</p>
-                        </div>
-                        <span class="tag-count">150 Exercices</span>
-                    </div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="startExercise(1)">
+                    <h3>1. Compléter la phrase</h3>
+                    <p>Trouver le bon mot à insérer dans la phrase.</p>
+                </div>
+                <div class="menu-card" onclick="startExercise(2)">
+                    <h3>2. Remettre les mots dans l'ordre</h3>
+                    <p>Reconstruire la phrase correcte (moins de 10 mots).</p>
+                </div>
+                <div class="menu-card" onclick="startExercise(3)">
+                    <h3>3. Associer le mot à l'image</h3>
+                    <p>Trouver le nom de l'objet/symbole présenté.</p>
+                </div>
+                <div class="menu-card" onclick="startExercise(4)">
+                    <h3>4. Trouver l'intrus</h3>
+                    <p>Identifier le mot qui n'appartient pas à la famille.</p>
                 </div>
             </div>
-
-            <!-- ZONE D'EXERCICE (COMMUNE) -->
-            <div id="exo-screen" class="hidden">
-                <div class="exo-header">
-                    <button class="btn-nav" onclick="showMenu()">← Menu</button>
-                    <button class="audio-btn" onclick="readInstruction()">🔊 Écouter</button>
-                    <span style="font-weight: 700; color: var(--text-muted);" id="progression-text">1 / 150</span>
-                </div>
-
-                <div class="progress-container">
-                    <div id="progress-bar" class="progress-bar"></div>
-                </div>
-
-                <div id="instruction-text" class="instruction">---</div>
-
-                <!-- Zone d'affichage dynamique -->
-                <div id="display-area" class="display-box"></div>
-
-                <!-- Zone d'interaction (mots banques) -->
-                <div id="bank-area" class="word-bank hidden"></div>
-
-                <!-- Grille d'options -->
-                <div id="options-area" class="options-grid"></div>
-
-                <div id="feedback-text" class="feedback"></div>
-
-                <button id="validate-btn" class="btn-action-primary hidden" onclick="checkExo2()">Valider la phrase</button>
-                <button id="next-btn" class="btn-action-primary hidden" onclick="nextQuestion()">Question Suivante ➔</button>
-            </div>
-
-            <!-- ÉCRAN DE FIN -->
-            <div id="results-screen" class="hidden results-box">
-                <h2>Série terminée ! 🎉</h2>
-                <p style="color: var(--text-muted); margin-top: 10px;">Voici le bilan de votre session :</p>
-                <div class="score-display" id="final-score">0 / 150</div>
-                <p id="score-comment" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 30px;"></p>
-                <button class="btn-action-primary" onclick="showMenu()">Retourner au Menu</button>
-            </div>
-
         </div>
-    </main>
+
+        <!-- ECRAN EXERCICE -->
+        <div id="screen-exo" class="hidden">
+            <div class="header">
+                <button class="btn-back" onclick="goMenu()">🏠 Menu</button>
+                <div id="progress" class="progress-text">Question 1 / 150</div>
+            </div>
+
+            <div id="instruction" class="instruction">---</div>
+            
+            <!-- Zone affichage de la question (Exo 1, 3, 4) -->
+            <div id="question-box" class="question-box"></div>
+
+            <!-- Zone de construction de phrase (Exo 2) -->
+            <div id="zone-builder" class="sentence-builder hidden"></div>
+            <div id="zone-bank" class="words-bank hidden"></div>
+
+            <!-- Zone des choix (Exo 1, 3, 4) -->
+            <div id="zone-options" class="options-grid"></div>
+
+            <div id="feedback" class="feedback"></div>
+
+            <!-- Boutons d'actions -->
+            <button id="btn-validate" class="btn-main hidden" onclick="validateExo2()">Valider la phrase</button>
+            <button id="btn-next" class="btn-main hidden" onclick="nextQuestion()">Question Suivante ➔</button>
+        </div>
+
+    </div>
 
     <script>
-        /* MOTEUR DE GÉNÉRATION DYNAMIQUE (150 EXERCICES PAR CATÉGORIE) */
+        // ==========================================
+        // 1. GENERATION DES 150 QUESTIONS PAR CATEGORIE
+        // ==========================================
 
-        // 1. Générateur Exercice 1 (Compléter la phrase)
-        function generateEx1() {
-            const templates = [
-                { s: "Le chat boit du ___.", a: "lait", o: ["lait", "pain", "savon", "stylo"] },
-                { s: "Je ferme la ___ à clé.", a: "porte", o: ["porte", "table", "soupe", "voiture"] },
-                { s: "Le soleil brille dans le ___.", a: "ciel", o: ["ciel", "manteau", "verre", "livre"] },
-                { s: "Il fait froid, je mets un ___.", a: "manteau", o: ["manteau", "poisson", "cahier", "jardin"] },
-                { s: "Le boulanger fabrique du ___.", a: "pain", o: ["pain", "sable", "jus", "carton"] },
-                { s: "Pour dormir, je vais dans mon ___.", a: "lit", o: ["lit", "sac", "garage", "four"] },
-                { s: "Elle coupe la viande avec un ___.", a: "couteau", o: ["couteau", "balai", "livre", "crayon"] },
-                { s: "Le chien aboie après le ___.", a: "chat", o: ["chat", "gâteau", "nuage", "mur"] },
-                { s: "Le matin, je bois un bon ___.", a: "café", o: ["café", "caillou", "papier", "verre"] },
-                { s: "Pour écrire, j'utilise un ___.", a: "stylo", o: ["stylo", "gâteau", "casque", "balai"] }
-            ];
+        // EXERCICE 1 : Compléter la phrase
+        const baseEx1 = [
+            { q: "Le chat boit du ___.", a: "lait", o: ["lait", "pain", "savon", "stylo"] },
+            { q: "Je ferme la ___ à clé.", a: "porte", o: ["porte", "table", "soupe", "voiture"] },
+            { q: "Le soleil brille dans le ___.", a: "ciel", o: ["ciel", "manteau", "verre", "livre"] },
+            { q: "Il fait froid, je mets un ___.", a: "manteau", o: ["manteau", "poisson", "cahier", "jardin"] },
+            { q: "Le boulanger fabrique du ___.", a: "pain", o: ["pain", "sable", "jus", "carton"] },
+            { q: "Pour dormir, je me couche dans mon ___.", a: "lit", o: ["lit", "sac", "garage", "four"] },
+            { q: "Elle coupe la viande avec un ___.", a: "couteau", o: ["couteau", "balai", "livre", "crayon"] },
+            { q: "Le chien aboie après le ___.", a: "chat", o: ["chat", "gâteau", "nuage", "mur"] },
+            { q: "Le matin, je bois un bon ___.", a: "café", o: ["café", "caillou", "papier", "verre"] },
+            { q: "J'écris sur une feuille avec un ___.", a: "stylo", o: ["stylo", "gâteau", "casque", "balai"] }
+        ];
 
-            const objets = ["livre", "chapeau", "sac", "verre", "manteau", "journal", "parapluie", "gâteau", "cadeau", "téléphone"];
-            const actions = [
-                { v: "lit", ctx: "un bon", correct: "livre" },
-                { v: "met", ctx: "son chaud", correct: "manteau" },
-                { v: "mange", ctx: "une part de", correct: "gâteau" },
-                { v: "ouvre", ctx: "son grand", correct: "parapluie" },
-                { v: "regarde", ctx: "son beau", correct: "journal" },
-                { v: "cherche", ctx: "son petit", correct: "sac" },
-                { v: "porte", ctx: "un joli", correct: "chapeau" },
-                { v: "reçoit", ctx: "un beau", correct: "cadeau" },
-                { v: "répond à son", ctx: "", correct: "téléphone" },
-                { v: "remplit son", ctx: "d'eau", correct: "verre" }
-            ];
+        // EXERCICE 2 : Remettre en ordre
+        const baseEx2 = [
+            { words: ["Le", "chat", "boit", "du", "lait."] },
+            { words: ["Elle", "regarde", "la", "télévision."] },
+            { words: ["Nous", "allons", "à", "la", "plage."] },
+            { words: ["Le", "soleil", "brille", "aujourd'hui."] },
+            { words: ["Il", "mange", "une", "pomme", "rouge."] },
+            { words: ["La", "voiture", "est", "dans", "le", "garage."] },
+            { words: ["Je", "ferme", "la", "porte."] },
+            { words: ["Le", "chien", "court", "dans", "le", "jardin."] },
+            { words: ["Elle", "prépare", "un", "bon", "gâteau."] },
+            { words: ["Le", "train", "arrive", "en", "gare."] }
+        ];
 
-            const sujets = ["Paul", "Marie", "Le voisin", "La cliente", "Mon ami", "Le docteur", "L'enfant", "La dame", "Le garçon", "Sophie"];
+        // EXERCICE 3 : Associer Mot / Image (Emojis)
+        const baseEx3 = [
+            { img: "🍎", a: "Une pomme", o: ["Une pomme", "Une poire", "Une banane", "Une cerise"] },
+            { img: "🚗", a: "Une voiture", o: ["Un vélo", "Une voiture", "Un avion", "Un train"] },
+            { img: "☕", a: "Un café", o: ["Un verre d'eau", "Un jus", "Un café", "Du lait"] },
+            { img: "🐶", a: "Un chien", o: ["Un chat", "Un oiseau", "Un chien", "Un lapin"] },
+            { img: "🐱", a: "Un chat", o: ["Un chat", "Un chien", "Un poisson", "Un cheval"] },
+            { img: "🍞", a: "Du pain", o: ["Du pain", "Du fromage", "Un gâteau", "Une soupe"] },
+            { img: "🏠", a: "Une maison", o: ["Une maison", "Une école", "Un garage", "Une usine"] },
+            { img: "🔑", a: "Une clé", o: ["Une clé", "Un marteau", "Un ciseau", "Un stylo"] },
+            { img: "👓", a: "Des lunettes", o: ["Des gants", "Des lunettes", "Un chapeau", "Une montre"] },
+            { img: "👟", a: "Une chaussure", o: ["Une chaussette", "Une chaussure", "Un pantalon", "Une veste"] }
+        ];
 
-            let list = [...templates];
-            let id = 0;
+        // EXERCICE 4 : Trouver l'intrus
+        const baseEx4 = [
+            { cat: "Fruits", a: "Voiture", o: ["Pomme", "Banane", "Voiture", "Fraise"] },
+            { cat: "Animaux", a: "Table", o: ["Chien", "Chat", "Table", "Cheval"] },
+            { cat: "Vêtements", a: "Marteau", o: ["Manteau", "Pantalon", "Marteau", "Chemise"] },
+            { cat: "Moyens de transport", a: "Boulanger", o: ["Voiture", "Train", "Avion", "Boulanger"] },
+            { cat: "Outils", a: "Salade", o: ["Marteau", "Tournevis", "Scie", "Salade"] },
+            { cat: "Meubles", a: "Poisson", o: ["Chaise", "Table", "Armoire", "Poisson"] },
+            { cat: "Couleurs", a: "Gâteau", o: ["Rouge", "Bleu", "Gâteau", "Vert"] },
+            { cat: "Ustensiles de cuisine", a: "Chaussure", o: ["Fourchette", "Cuillère", "Couteau", "Chaussure"] }
+        ];
 
-            while(list.length < 150) {
-                let s = sujets[id % sujets.length];
-                let a = actions[id % actions.length];
-                let phrase = `${s} ${a.v} ${a.ctx} ___.`.replace("  ", " ");
-                
-                // Choisir 3 faux choix
-                let dist = objets.filter(o => o !== a.correct).sort(() => 0.5 - Math.random()).slice(0, 3);
-                let opts = [a.correct, ...dist].sort(() => 0.5 - Math.random());
-
-                list.push({ sentence: phrase, answer: a.correct, options: opts });
-                id++;
-            }
-            return list;
-        }
-
-        // 2. Générateur Exercice 2 (Syntaxe)
-        function generateEx2() {
-            const baseSentences = [
-                ["Le", "chat", "boit", "du", "lait."],
-                ["Elle", "regarde", "la", "télévision."],
-                ["Nous", "allons", "à", "la", "plage."],
-                ["Le", "soleil", "brille", "aujourd'hui."],
-                ["Il", "mange", "une", "pomme", "rouge."],
-                ["La", "voiture", "est", "dans", "le", "garage."],
-                ["Je", "ferme", "la", "porte."],
-                ["Le", "chien", "court", "dans", "le", "jardin."],
-                ["Elle", "prépare", "un", "bon", "gâteau."],
-                ["Le", "train", "arrive", "en", "gare."]
-            ];
-
-            const verbes = ["mange", "regarde", "achète", "cherche", "range", "prépare", "porte", "donne", "lavent", "aiment"];
-            const sujets = ["Le garçon", "La fille", "Mon frère", "La voisine", "Le docteur", "L'homme", "Le boulanger", "Le client", "L'étudiant", "Papa"];
-            const complements = ["le journal.", "la voiture.", "une pomme.", "les clés.", "le sac.", "le repas.", "un manteau.", "une fleur.", "le vélo.", "un livre."];
-
-            let list = baseSentences.map(target => ({
-                target: target,
-                pool: [...target].sort(() => 0.5 - Math.random())
-            }));
-
-            let id = 0;
-            while(list.length < 150) {
-                let su = sujets[id % sujets.length];
-                let ve = verbes[id % verbes.length];
-                let co = complements[id % complements.length];
-                
-                let target = [...su.split(' '), ve, ...co.split(' ')];
-                let pool = [...target].sort(() => 0.5 - Math.random());
-
-                list.push({ target: target, pool: pool });
-                id++;
-            }
-            return list;
-        }
-
-        // 3. Générateur Exercice 3 (Mot et Image)
-        function generateEx3() {
-            const items = [
-                { icon: "🍎", answer: "Une pomme", options: ["Une pomme", "Une poire", "Une banane", "Une cerise"] },
-                { icon: "🚗", answer: "Une voiture", options: ["Un vélo", "Une voiture", "Un avion", "Un train"] },
-                { icon: "☕", answer: "Un café", options: ["Un verre d'eau", "Un jus", "Un café", "Du lait"] },
-                { icon: "🐶", answer: "Un chien", options: ["Un chat", "Un oiseau", "Un chien", "Un lapin"] },
-                { icon: "🐱", answer: "Un chat", options: ["Un chat", "Un chien", "Un poisson", "Un cheval"] },
-                { icon: "🍞", answer: "Du pain", options: ["Du pain", "Du fromage", "Un gâteau", "Une soupe"] },
-                { icon: "🏠", answer: "Une maison", options: ["Une maison", "Une école", "Un garage", "Une usine"] },
-                { icon: "📚", answer: "Des livres", options: ["Des livres", "Des stylos", "Des tables", "Des cartes"] },
-                { icon: "☀️", answer: "Le soleil", options: ["La lune", "Le soleil", "Un nuage", "La pluie"] },
-                { icon: "🔑", answer: "Une clé", options: ["Une clé", "Un marteau", "Un ciseau", "Un stylo"] },
-                { icon: "👓", answer: "Des lunettes", options: ["Des gants", "Des lunettes", "Un chapeau", "Une montre"] },
-                { icon: "👟", answer: "Une chaussure", options: ["Une chaussette", "Une chaussure", "Un pantalon", "Une veste"] },
-                { icon: "🍌", answer: "Une banane", options: ["Une banane", "Un citron", "Une pomme", "Une fraise"] },
-                { icon: "🧀", answer: "Du fromage", options: ["Du pain", "Du beurre", "Du fromage", "Du lait"] },
-                { icon: "📱", answer: "Un téléphone", options: ["Une télévision", "Un ordinateur", "Un téléphone", "La radio"] }
-            ];
-
-            let list = [];
-            while(list.length < 150) {
-                let base = items[list.length % items.length];
-                list.push({
-                    icon: base.icon,
-                    answer: base.answer,
-                    options: [...base.options].sort(() => 0.5 - Math.random())
+        // Duplication automatique pour atteindre 150 éléments par exercice
+        function createData(baseArray, targetSize = 150) {
+            let result = [];
+            while (result.length < targetSize) {
+                baseArray.forEach(item => {
+                    if (result.length < targetSize) {
+                        result.push(JSON.parse(JSON.stringify(item)));
+                    }
                 });
             }
-            return list;
+            return result;
         }
 
-        // 4. Générateur Exercice 4 (Chasser l'Intrus)
-        function generateEx4() {
-            const categories = [
-                { category: "Fruits", correct: "Voiture", options: ["Pomme", "Banane", "Voiture", "Fraise"] },
-                { category: "Animaux", correct: "Table", options: ["Chien", "Chat", "Table", "Cheval"] },
-                { category: "Vêtements", correct: "Marteau", options: ["Manteau", "Pantalon", "Marteau", "Chemise"] },
-                { category: "Moyens de transport", correct: "Boulanger", options: ["Voiture", "Train", "Avion", "Boulanger"] },
-                { category: "Outils", correct: "Salade", options: ["Marteau", "Tournevis", "Scie", "Salade"] },
-                { category: "Meubles", correct: "Poisson", options: ["Chaise", "Table", "Armoire", "Poisson"] },
-                { category: "Couleurs", correct: "Gâteau", options: ["Rouge", "Bleu", "Gâteau", "Vert"] },
-                { category: "Ustensiles de cuisine", correct: "Chaussure", options: ["Fourchette", "Cuillère", "Couteau", "Chaussure"] }
-            ];
+        const dataEx1 = createData(baseEx1);
+        const dataEx2 = createData(baseEx2);
+        const dataEx3 = createData(baseEx3);
+        const dataEx4 = createData(baseEx4);
 
-            let list = [];
-            while(list.length < 150) {
-                let base = categories[list.length % categories.length];
-                list.push({
-                    category: base.category,
-                    correct: base.correct,
-                    options: [...base.options].sort(() => 0.5 - Math.random())
-                });
-            }
-            return list;
-        }
+        // ==========================================
+        // 2. LOGIQUE D'AFFICHAGE ET D'INTERACTION
+        // ==========================================
 
-        /* DONNÉES GLOBALES */
-        const dataset = {
-            1: generateEx1(),
-            2: generateEx2(),
-            3: generateEx3(),
-            4: generateEx4()
-        };
-
-        /* ÉTAT DE L'APPLICATION */
-        let currentExoType = 1;
+        let currentType = 1;
         let currentIndex = 0;
-        let score = 0;
 
-        /* FONCTIONS DE NAVIGATION */
-        function showMenu() {
-            document.getElementById('menu-screen').classList.remove('hidden');
-            document.getElementById('exo-screen').classList.add('hidden');
-            document.getElementById('results-screen').classList.add('hidden');
+        function goMenu() {
+            document.getElementById('screen-menu').classList.remove('hidden');
+            document.getElementById('screen-exo').classList.add('hidden');
         }
 
-        function startEx(type) {
-            currentExoType = type;
+        function startExercise(type) {
+            currentType = type;
             currentIndex = 0;
-            score = 0;
-            document.getElementById('menu-screen').classList.add('hidden');
-            document.getElementById('exo-screen').classList.remove('hidden');
+            document.getElementById('screen-menu').classList.add('hidden');
+            document.getElementById('screen-exo').classList.remove('hidden');
             loadQuestion();
         }
 
-        /* CHARGEMENT D'UNE QUESTION */
         function loadQuestion() {
-            const data = dataset[currentExoType][currentIndex];
-            const total = 150;
+            // Reinitialisation visuelle
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('btn-next').classList.add('hidden');
+            document.getElementById('btn-validate').classList.add('hidden');
             
-            // Progression
-            document.getElementById('progression-text').textContent = `${currentIndex + 1} / ${total}`;
-            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / total) * 100}%`;
+            document.getElementById('progress').textContent = `Question ${currentIndex + 1} / 150`;
 
-            // Reset visuel
-            document.getElementById('feedback-text').textContent = '';
-            document.getElementById('feedback-text').className = 'feedback';
-            document.getElementById('next-btn').classList.add('hidden');
-            document.getElementById('validate-btn').classList.add('hidden');
-            
-            const displayArea = document.getElementById('display-area');
-            const bankArea = document.getElementById('bank-area');
-            const optionsArea = document.getElementById('options-area');
+            const qBox = document.getElementById('question-box');
+            const zOptions = document.getElementById('zone-options');
+            const zBuilder = document.getElementById('zone-builder');
+            const zBank = document.getElementById('zone-bank');
 
-            bankArea.classList.add('hidden');
-            optionsArea.classList.remove('hidden');
-            optionsArea.innerHTML = '';
-            displayArea.innerHTML = '';
+            // Cacher toutes les zones spécialisées
+            qBox.classList.add('hidden');
+            zOptions.classList.add('hidden');
+            zBuilder.classList.add('hidden');
+            zBank.classList.add('hidden');
 
-            // --- TYPE 1: COMPLÉTER LA PHRASE ---
-            if (currentExoType === 1) {
-                document.getElementById('instruction-text').textContent = "Choisissez le mot qui complète la phrase :";
-                displayArea.textContent = data.sentence;
+            zOptions.innerHTML = '';
+            zBuilder.innerHTML = '';
+            zBank.innerHTML = '';
 
-                data.options.forEach(opt => {
+            // --- EXERCICE 1 ---
+            if (currentType === 1) {
+                const item = dataEx1[currentIndex];
+                document.getElementById('instruction').textContent = "Choisissez le mot pour compléter la phrase :";
+                
+                qBox.textContent = item.q;
+                qBox.classList.remove('hidden');
+
+                item.o.sort(() => 0.5 - Math.random()).forEach(opt => {
                     const btn = document.createElement('button');
-                    btn.className = 'btn-opt';
+                    btn.className = 'btn-option';
                     btn.textContent = opt;
-                    btn.onclick = () => checkExoChoice(opt, data.answer, btn);
-                    optionsArea.appendChild(btn);
+                    btn.onclick = () => checkChoice(opt, item.a, btn);
+                    zOptions.appendChild(btn);
                 });
+                zOptions.classList.remove('hidden');
             }
 
-            // --- TYPE 2: SYNTAXE & ORDRE ---
-            else if (currentExoType === 2) {
-                document.getElementById('instruction-text').textContent = "Remettez les mots dans l'ordre pour former la phrase :";
-                bankArea.classList.remove('hidden');
-                optionsArea.classList.add('hidden');
-                document.getElementById('validate-btn').classList.remove('hidden');
+            // --- EXERCICE 2 ---
+            else if (currentType === 2) {
+                const item = dataEx2[currentIndex];
+                document.getElementById('instruction').textContent = "Cliquez sur les mots pour former la phrase :";
 
-                displayArea.id = "drop-zone";
-                bankArea.innerHTML = '';
+                zBuilder.classList.remove('hidden');
+                zBank.classList.remove('hidden');
+                document.getElementById('btn-validate').classList.remove('hidden');
 
-                data.pool.forEach(word => {
+                // Mélanger les mots
+                const shuffled = [...item.words].sort(() => 0.5 - Math.random());
+
+                shuffled.forEach(word => {
                     const chip = document.createElement('div');
-                    chip.className = 'word-chip';
+                    chip.className = 'word-tag';
                     chip.textContent = word;
                     chip.onclick = () => {
-                        if (chip.parentElement === bankArea) {
-                            displayArea.appendChild(chip);
+                        if (chip.parentElement === zBank) {
+                            zBuilder.appendChild(chip);
                         } else {
-                            bankArea.appendChild(chip);
+                            zBank.appendChild(chip);
                         }
                     };
-                    bankArea.appendChild(chip);
+                    zBank.appendChild(chip);
                 });
             }
 
-            // --- TYPE 3: MOT ET IMAGE ---
-            else if (currentExoType === 3) {
-                document.getElementById('instruction-text').textContent = "Quel est le mot correspondant à cette image ?";
-                displayArea.innerHTML = `<span style="font-size: 4rem;">${data.icon}</span>`;
+            // --- EXERCICE 3 ---
+            else if (currentType === 3) {
+                const item = dataEx3[currentIndex];
+                document.getElementById('instruction').textContent = "Quel est le nom de cette image/icône ?";
 
-                data.options.forEach(opt => {
+                qBox.innerHTML = `<span style="font-size: 4rem;">${item.img}</span>`;
+                qBox.classList.remove('hidden');
+
+                item.o.sort(() => 0.5 - Math.random()).forEach(opt => {
                     const btn = document.createElement('button');
-                    btn.className = 'btn-opt';
+                    btn.className = 'btn-option';
                     btn.textContent = opt;
-                    btn.onclick = () => checkExoChoice(opt, data.answer, btn);
-                    optionsArea.appendChild(btn);
+                    btn.onclick = () => checkChoice(opt, item.a, btn);
+                    zOptions.appendChild(btn);
                 });
+                zOptions.classList.remove('hidden');
             }
 
-            // --- TYPE 4: INTRUS ---
-            else if (currentExoType === 4) {
-                document.getElementById('instruction-text').textContent = `Trouvez l'intrus (Catégorie : ${data.category}) :`;
-                displayArea.textContent = `Quel mot N'EST PAS un(e) ${data.category.toLowerCase()} ?`;
+            // --- EXERCICE 4 ---
+            else if (currentType === 4) {
+                const item = dataEx4[currentIndex];
+                document.getElementById('instruction').textContent = `Trouvez l'intrus dans la catégorie "${item.cat}" :`;
 
-                data.options.forEach(opt => {
+                qBox.textContent = `Quel mot N'EST PAS un(e) ${item.cat.toLowerCase()} ?`;
+                qBox.classList.remove('hidden');
+
+                item.o.sort(() => 0.5 - Math.random()).forEach(opt => {
                     const btn = document.createElement('button');
-                    btn.className = 'btn-opt';
+                    btn.className = 'btn-option';
                     btn.textContent = opt;
-                    btn.onclick = () => checkExoChoice(opt, data.correct, btn);
-                    optionsArea.appendChild(btn);
+                    btn.onclick = () => checkChoice(opt, item.a, btn);
+                    zOptions.appendChild(btn);
                 });
+                zOptions.classList.remove('hidden');
             }
         }
 
-        /* VALIDATION EXERCICE 1, 3, 4 */
-        function checkExoChoice(selected, correct, btnElement) {
-            const buttons = document.querySelectorAll('#options-area .btn-opt');
-            buttons.forEach(b => b.disabled = true);
+        // VERIFICATION CHOIX (EXERCICES 1, 3, 4)
+        function checkChoice(selected, correct, btn) {
+            const allBtns = document.querySelectorAll('.btn-option');
+            allBtns.forEach(b => b.disabled = true);
 
-            const feedback = document.getElementById('feedback-text');
+            const feedback = document.getElementById('feedback');
 
             if (selected === correct) {
-                btnElement.classList.add('correct');
-                feedback.textContent = "Excellent ! Bonne réponse. 👏";
+                btn.classList.add('correct');
+                feedback.textContent = "Bravo ! Bonne réponse. 🎉";
                 feedback.className = "feedback success";
-                score++;
             } else {
-                btnElement.classList.add('wrong');
+                btn.classList.add('wrong');
                 feedback.textContent = `Incorrect. La réponse était : ${correct}`;
                 feedback.className = "feedback error";
             }
 
-            document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('btn-next').classList.remove('hidden');
         }
 
-        /* VALIDATION EXERCICE 2 (SYNTAXE) */
-        function checkExo2() {
-            const dropZone = document.getElementById('display-area');
-            const currentSentence = Array.from(dropZone.children).map(c => c.textContent);
-            const targetSentence = dataset[2][currentIndex].target;
+        // VERIFICATION PHRASE (EXERCICE 2)
+        function validateExo2() {
+            const builder = document.getElementById('zone-builder');
+            const userWords = Array.from(builder.children).map(chip => chip.textContent);
+            const targetWords = dataEx2[currentIndex].words;
 
-            const isCorrect = JSON.stringify(currentSentence) === JSON.stringify(targetSentence);
-            const feedback = document.getElementById('feedback-text');
+            const isCorrect = JSON.stringify(userWords) === JSON.stringify(targetWords);
+            const feedback = document.getElementById('feedback');
 
             if (isCorrect) {
                 feedback.textContent = "Parfait ! La phrase est correcte. 🎉";
                 feedback.className = "feedback success";
-                score++;
             } else {
-                feedback.textContent = ` Incorrect. Phrase attendue : "${targetSentence.join(' ')}"`;
+                feedback.textContent = "Les mots ne sont pas encore dans le bon ordre.";
                 feedback.className = "feedback error";
             }
 
-            document.getElementById('validate-btn').classList.add('hidden');
-            document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('btn-validate').classList.add('hidden');
+            document.getElementById('btn-next').classList.remove('hidden');
         }
 
-        /* SUIVANT OU FIN */
+        // PASSAGE A LA QUESTION SUIVANTE
         function nextQuestion() {
-            currentIndex++;
-            if (currentIndex < 150) {
+            if (currentIndex < 149) {
+                currentIndex++;
                 loadQuestion();
             } else {
-                showResults();
-            }
-        }
-
-        /* AFFICHAGE DES RÉSULTATS */
-        function showResults() {
-            document.getElementById('exo-screen').classList.add('hidden');
-            document.getElementById('results-screen').classList.remove('hidden');
-            
-            document.getElementById('final-score').textContent = `${score} / 150`;
-            
-            const ratio = score / 150;
-            let comment = "";
-            if (ratio >= 0.8) comment = "Résultats remarquables ! Continuez ainsi. 🌟";
-            else if (ratio >= 0.5) comment = "Bon travail, l'entraînement porte ses fruits ! 👍";
-            else comment = "Session terminée. La régularité est la clé de la réussite ! 💙";
-            
-            document.getElementById('score-comment').textContent = comment;
-        }
-
-        /* SYNTHÈSE VOCALE (ÉCOUTE DE L'INSTRUCTION) */
-        function readInstruction() {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let textToRead = document.getElementById('instruction-text').textContent;
-                
-                const display = document.getElementById('display-area').textContent;
-                if (display && currentExoType !== 3) {
-                    textToRead += " " + display;
-                }
-
-                const utterance = new SpeechSynthesisUtterance(textToRead);
-                utterance.lang = 'fr-FR';
-                utterance.rate = 0.9; // Débit légèrement ralenti
-                window.speechSynthesis.speak(utterance);
+                alert("Félicitations, vous avez terminé cette série de 150 exercices !");
+                goMenu();
             }
         }
     </script>
